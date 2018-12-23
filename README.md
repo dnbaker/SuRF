@@ -1,6 +1,6 @@
 # Succinct Range Filter (SuRF)
-[![Build Status](https://travis-ci.org/efficient/SuRF.svg?branch=master)](https://travis-ci.org/efficient/SuRF)
-[![Coverage Status](https://coveralls.io/repos/github/efficient/SuRF/badge.svg?branch=master)](https://coveralls.io/github/efficient/SuRF?branch=master)
+[![Build Status](https://travis-ci.org/dnbaker/surf.svg?branch=master)](https://travis-ci.org/dnbaker/surf)
+[![Coverage Status](https://coveralls.io/repos/github/dnbaker/surf/badge.svg?branch=master)](https://coveralls.io/github/dnbaker/surf?branch=master)
 
 **SuRF** is a fast and compact filter that provides exact-match filtering,
 range filtering, and approximate range counts. This is the source code for our
@@ -24,7 +24,7 @@ The RocksDB experiments with SuRF can be found [here](https://github.com/efficie
     make -j
 
 ## Simple Example
-A simple example can be found [here](https://github.com/efficient/SuRF/blob/master/simple_example.cpp). To run the example:
+A simple example can be found [here](https://github.com/dnbaker/surf/blob/master/simple_example.cpp). To run the example:
 ```
 g++ -mpopcnt -std=c++11 simple_example.cpp
 ./a.out
@@ -55,4 +55,4 @@ and `bench/workload_arf.cpp` for more experiment configurations.
 ## License
 Copyright 2018, Carnegie Mellon University
 
-Licensed under the [Apache License](https://github.com/efficient/SuRF/blob/master/LICENSE).
+Licensed under the [Apache License](https://github.com/dnbaker/surf/blob/master/LICENSE).
