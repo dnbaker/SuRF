@@ -17,7 +17,7 @@ int main() {
     };
 
     // basic surf
-    SuRF* surf = new SuRF(keys);
+    SuRF* surf = new SuRF(keys.begin(), keys.end());
 
     // use default dense-to-sparse ratio; specify suffix type and length
     SuRF* surf_hash = new SuRF(keys, surf::kHash, 8, 0);

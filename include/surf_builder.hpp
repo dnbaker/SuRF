@@ -27,7 +27,18 @@ public:
     // through a single scan of the sorted key list.
     // After build, the member vectors are used in SuRF constructor.
     // REQUIRED: provided key list must be sorted.
-    void build(const std::vector<std::string>& keys);
+    void build(const std::vector<std::string>& keys) {
+        build(keys.begin(), keys.end());
+    }
+    template<typename It>
+    void build(It i1, It i2) {
+        assert(i1 < i2);
+        buildSparse(i1, i2);
+        if (include_dense_) {
+        	determineCutoffLevel();
+        	buildDense();
+        }
+    }
 
     static bool readBit(const std::vector<word_t>& bits, const position_t pos) {
 	assert(pos < (bits.size() * kWordSize));
@@ -98,7 +109,22 @@ private:
 
     // Fill in the LOUDS-Sparse vectors through a single scan
     // of the sorted key list.
-    void buildSparse(const std::vector<std::string>& keys);
+    void buildSparse(const std::vector<std::string>& keys) {buildSparse(keys.begin(), keys.end());}
+
+    template<typename It> // Must be bidirectional iterator
+    void buildSparse(It i1, It i2) {
+        for(;i1 != i2; ++i1) {
+        	level_t level = skipCommonPrefix(*i1);	
+        	It curpos = i1;
+        	while ((i1 + 1 != i2) && isSameKey(*curpos, *(i1 + 1)))
+        	    i1++;
+        	if (i1 + 1 != i2)
+        	    level = insertKeyBytesToTrieUntilUnique(*curpos, *(i1 + 1), level);
+        	else // for last key, there is no successor key in the list
+        	    level = insertKeyBytesToTrieUntilUnique(*curpos, std::string(), level);
+        	insertSuffix(*curpos, level);
+        }
+    }
 
     // Walks down the current partially-filled trie by comparing key to
     // its previous key in the list until their prefixes do not match.
@@ -173,28 +199,6 @@ private:
     std::vector<bool> is_last_item_terminator_;
 };
 
-void SuRFBuilder::build(const std::vector<std::string>& keys) {
-    assert(keys.size() > 0);
-    buildSparse(keys);
-    if (include_dense_) {
-	determineCutoffLevel();
-	buildDense();
-    }
-}
-
-void SuRFBuilder::buildSparse(const std::vector<std::string>& keys) {
-    for (position_t i = 0; i < keys.size(); i++) {
-	level_t level = skipCommonPrefix(keys[i]);	
-	position_t curpos = i;
-	while ((i + 1 < keys.size()) && isSameKey(keys[curpos], keys[i+1]))
-	    i++;
-	if (i < keys.size() - 1)
-	    level = insertKeyBytesToTrieUntilUnique(keys[curpos], keys[i+1], level);
-	else // for last key, there is no successor key in the list
-	    level = insertKeyBytesToTrieUntilUnique(keys[curpos], std::string(), level);
-	insertSuffix(keys[curpos], level);
-    }
-}
 
 level_t SuRFBuilder::skipCommonPrefix(const std::string& key) {
     level_t level = 0;
