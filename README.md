@@ -1,5 +1,5 @@
 # Succinct Range Filter (SuRF)
-[![Build Status](https://travis-ci.org/dnbaker/SuRF.svg?branch=master)](https://travis-ci.org/dnbaker/surf)
+[![Build Status](https://travis-ci.org/dnbaker/SuRF.svg?branch=master)](https://travis-ci.org/dnbaker/SuRF)
 [![Coverage Status](https://coveralls.io/repos/github/dnbaker/SuRF/badge.svg?branch=master)](https://coveralls.io/github/dnbaker/SuRF?branch=master)
 
 **SuRF** is a fast and compact filter that provides exact-match filtering,
